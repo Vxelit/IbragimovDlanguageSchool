@@ -9,22 +9,32 @@
 	  Title="ClientPage"
 	  Background="#FFFFFF">
 	<Grid>
-		<ListView Name="ClientListView">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="10"></RowDefinition>
+			<RowDefinition Height="*"></RowDefinition>
+			<RowDefinition Height="50"></RowDefinition>
+		</Grid.RowDefinitions>
+		
+		
+		
+		<ListView Name="ClientListView" Grid.Row="1" HorizontalContentAlignment="Stretch">
 			<ListView.ItemTemplate>
 				<DataTemplate>
 
 					<Grid>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition></ColumnDefinition>
-							<ColumnDefinition></ColumnDefinition>
-						</Grid.ColumnDefinitions>
+							<ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
 
 						<Grid.RowDefinitions>
 							<RowDefinition></RowDefinition>
 							<RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+							<RowDefinition></RowDefinition>
+							<RowDefinition></RowDefinition>
+							<RowDefinition></RowDefinition>
 						</Grid.RowDefinitions>
 						
 						
@@ -41,20 +51,22 @@
 						</Image>
 
 						<TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding FullNameAndID, StringFormat=ID: {0}}"></TextBlock>
-                        <WrapPanel Grid.Column="1" Grid.Row="1">
+						<WrapPanel Grid.Column="1" Grid.Row="1">
 							<TextBlock Text="{Binding Gender.Name, StringFormat=Пол: {0}}"></TextBlock>
 							<TextBlock Text="{Binding BirthdayText}"></TextBlock>
 						</WrapPanel>
 
-                        <WrapPanel Grid.Column="1" Grid.Row="2">
+						<WrapPanel Grid.Column="1" Grid.Row="2">
 							<TextBlock Text="{Binding Phone, StringFormat=Телефон: {0}}"></TextBlock>
 							<TextBlock Text="{Binding Email, StringFormat=e-mail: {0}}"></TextBlock>
 						</WrapPanel>
-                        <TextBlock Grid.Column="1" Text="{Binding RegistrationDateText}" Grid.Row="3"></TextBlock>
-                        <WrapPanel Grid.Column="1" Grid.Row="4">
+						<TextBlock Grid.Column="1" Text="{Binding RegistrationDateText}" Grid.Row="3"></TextBlock>
+						<WrapPanel Grid.Column="1" Grid.Row="4">
 							<TextBlock Text="{Binding LastVisitText}"></TextBlock>
 							<TextBlock Text="{Binding VisitCountText}"></TextBlock>
 						</WrapPanel>
+
+                        <Button Name="DeleteBtn" Click="DeleteBtn_Click" Grid.Column="2" HorizontalAlignment="Right" Content="Удалить" Margin="5"></Button>
 						
 					</Grid>
 					
@@ -63,5 +75,32 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+
+            <TextBlock Name="TBCount" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Name="TBAllRecords" VerticalAlignment="Center"></TextBlock>
+            <TextBlock></TextBlock>
+
+            <TextBlock Text="  Выводить по " HorizontalAlignment="Center" Height="20"></TextBlock>
+            <ComboBox Name="ComboCountRecords" HorizontalAlignment="Center" Height="30" Width="70" SelectionChanged="ComboCountRecords_SelectionChanged">
+                <TextBlock Text="10"></TextBlock>
+                <TextBlock Text="50"></TextBlock>
+                <TextBlock Text="200"></TextBlock>
+                <TextBlock Text="Все"></TextBlock>
+            </ComboBox>
+            
+            
+            <Button Name="LeftDirButton" Content="&lt;" Width="20" Height="20" Click="LeftDirButton_Click"></Button>
+			<ListBox Name="PageListBox" MouseUp="PageListBox_MouseUp" Height="35" HorizontalAlignment="Center">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"></WrapPanel>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+			</ListBox>
+            <Button Name="RightDirButton" Content="&gt;" Width="20" Height="20" Click="RightDirButton_Click"></Button>
+		</StackPanel>
+		
 	</Grid>
 </Page>
