@@ -19,6 +19,10 @@ namespace languageSchool
 	/// <summary>
 	/// Логика взаимодействия для ClientPage.xaml
 	/// </summary>
+	/// 
+
+	
+
 	public partial class ClientPage : Page
 	{
 
@@ -64,15 +68,71 @@ namespace languageSchool
 		{
 			var currentClients = IbragimovDLanguageEntities.GetContext().Client.ToList();
 
-			
-			
-			ClientListView.ItemsSource = currentClients.ToList();
-			
-			
-			//
-			
+			//if (ComboFilter.SelectedIndex == 1)
+			//{
+
+			//}
+
+			//if (ComboFilter.SelectedIndex == 2)
+			//{
+
+			//}
+
+
+			switch (ComboFilter.SelectedIndex)
+			{
+				case 2:
+					currentClients = currentClients.Where(p => p.Gender.Name.Contains("мужской")).ToList();
+					break;
+				case 1:
+					currentClients = currentClients.Where(p => p.Gender.Name.Contains("женский")).ToList();
+					break;
+			}
+
+			currentClients = currentClients
+				.Where(p =>
+				p.FirstName.ToLower().Contains(TBoxSearch.Text.ToLower()) ||
+				p.LastName.ToLower().Contains(TBoxSearch.Text.ToLower()) ||
+				p.Patronymic.ToLower().Contains(TBoxSearch.Text.ToLower()) ||
+				p.EmailString.ToLower().Contains(TBoxSearch.Text.ToLower()) || // если будем искать через email и у записи его не будет, то приложение будет вылетать, так как ничего не найдет.
+				p.Phone
+					.Replace("(", "")
+					.Replace(")", "")
+					.Replace("-", "")
+					.Replace("+", "")
+					.Replace(" ", "")
+					.Contains(TBoxSearch.Text
+						.Replace("(", "")
+						.Replace(")", "")
+						.Replace("-", "")
+						.Replace("+", "")
+						.Replace(" ", ""))
+				).ToList();
+
+			switch (ComboSort.SelectedIndex)
+			{
+				case 1:
+					currentClients = currentClients.OrderBy(p => p.LastName).ToList();
+					break;
+				case 2:
+					currentClients = currentClients.OrderByDescending(p => p.LastVisit).ToList();
+					break;
+
+				case 3:
+					currentClients = currentClients.OrderByDescending(p => p.VisitCount).ToList();
+					break;
+
+			}
+
+			TBCount.Text = currentClients.Count.ToString();
+            TBAllRecords.Text = " из " + IbragimovDLanguageEntities.GetContext().Client.Count().ToString();
+
+
+            ClientListView.ItemsSource = currentClients.ToList();
 			TableList = currentClients;
             ChangePage(0, 0);
+
+
 
         }
 
@@ -162,9 +222,12 @@ namespace languageSchool
                     PageListBox.Items.Add(i);
                 }
                 PageListBox.SelectedIndex = CurrentPage;
-                min = CurrentPage * recordsAmountOnList + recordsAmountOnList < CountRecords ? CurrentPage * recordsAmountOnList + recordsAmountOnList : CountRecords;
-                TBCount.Text = min.ToString();
-                TBAllRecords.Text = " из " + CountRecords.ToString();
+				//min = CurrentPage * recordsAmountOnList + recordsAmountOnList < CountRecords ? CurrentPage * recordsAmountOnList + recordsAmountOnList : CountRecords;
+				//TBCount.Text = min.ToString();
+
+				//TBAllRecords.Text = " из " + CountRecords.ToString();
+				TBAllRecords.Text = " из " + IbragimovDLanguageEntities.GetContext().Client.Count().ToString();
+
 
                 ClientListView.ItemsSource = CurrentPageList;
                 ClientListView.Items.Refresh();
@@ -178,6 +241,7 @@ namespace languageSchool
 
         private void ComboCountRecords_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             if (ComboCountRecords.SelectedIndex == 0)
                 recordsAmountOnList = 10;
             else if (ComboCountRecords.SelectedIndex == 1)
@@ -224,6 +288,43 @@ namespace languageSchool
 					}
 				}
 			}
+        }
+
+        private void TBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+			UpdateClients();
+        }
+
+        private void ComboFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			UpdateClients();
+        }
+
+        private void ComboSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			UpdateClients();
+        }
+
+        private void EditBtn_Click(object sender, RoutedEventArgs e)
+        {
+			Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Client));
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+			Manager.MainFrame.Navigate(new AddEditPage(null));
+        }
+
+        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+			if (Visibility == Visibility.Visible)
+			{
+				IbragimovDLanguageEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
+				ClientListView.ItemsSource = IbragimovDLanguageEntities.GetContext().Client.ToList();
+				UpdateClients();
+			}
+
         }
     }
 }

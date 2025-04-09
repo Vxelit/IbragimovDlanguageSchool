@@ -9,100 +9,120 @@
 
 namespace languageSchool
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
+	using System;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+	using System.Linq;
 
-    public partial class Client
-    {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Client()
-        {
-            this.ClientService = new HashSet<ClientService>();
-            this.Tag = new HashSet<Tag>();
-        }
-    
-        public int ID { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string Patronymic { get; set; }
-        public string GenderCode { get; set; }
-        public string Phone { get; set; }
-        public string PhotoPath { get; set; }
-        public Nullable<System.DateTime> Birthday { get; set; }
-        public string Email { get; set; }
-        public System.DateTime RegistrationDate { get; set; }
+	public partial class Client
+	{
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+		public Client()
+		{
+			this.ClientService = new HashSet<ClientService>();
+			this.Tag = new HashSet<Tag>();
+		}
 
-
-        public string FullNameAndID { 
-            get
-            {
-                return this.ID + " " + this.LastName + " " + this.FirstName + " " + this.Patronymic;
-            } 
-        }
-
-        public string BirthdayText
-        {
-            get
-            {
-                
-
-                return  " " + "Дата Рождения: " + this.Birthday.Value.ToShortDateString();
-            }
-        }
-
-        public string RegistrationDateText
-        {
-            get
-            {
-                return " " + "Дата регистрации: " + this.RegistrationDate.ToShortDateString();
-            }
-        }
-
-        public string LastVisit
-        {
-            get
-            {
-                return this.ClientService.Max(p => p.StartTime).ToShortDateString();
-            }
-        }
-        public string LastVisitText
-        {
-            get
-            {
-
-                
-                if (VisitCount == 0)
-                {
-                    return "Дата последнего посещения: " + "нет ";
-                }
-
-                return "Дата последнего посещения: " + LastVisit + " ";
-            }
-        }
-
-        public int VisitCount
-        {
-            get
-            {
-                return this.ClientService.Count();
-            }
-        }
-
-        public string VisitCountText
-        {
-            get
-            {
-                return "Кол-во посещений: " + VisitCount;
-            }
-        }
+		public int ID { get; set; }
+		public string LastName { get; set; }
+		public string FirstName { get; set; }
+		public string Patronymic { get; set; }
+		public string GenderCode { get; set; }
+		public string Phone { get; set; }
+		public string PhotoPath { get; set; }
+		public Nullable<System.DateTime> Birthday { get; set; }
+		public string Email { get; set; }
+		public System.DateTime RegistrationDate { get; set; }
 
 
-        public virtual Gender Gender { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ClientService> ClientService { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tag> Tag { get; set; }
-    }
+
+		public string FullNameAndID {
+			get
+			{
+				return this.ID + " " + this.LastName + " " + this.FirstName + " " + this.Patronymic;
+			}
+		}
+
+		public string BirthdayText
+		{
+			get
+			{
+
+
+				return " " + "Дата Рождения: " + this.Birthday.Value.ToShortDateString();
+			}
+		}
+
+		public string RegistrationDateText
+		{
+			get
+			{
+				return " " + "Дата регистрации: " + this.RegistrationDate.ToShortDateString();
+			}
+		}
+
+		public DateTime LastVisit
+		{
+			get
+			{
+				if (this.ClientService.Count == 0)
+					return DateTime.MinValue;
+				else
+				{
+					return this.ClientService.Max(p => p.StartTime);
+				}
+			}
+		}
+		public string LastVisitText
+		{
+			get
+			{
+
+
+				if (VisitCount == 0)
+				{
+					return "Дата последнего посещения: " + "нет ";
+				}
+
+				return "Дата последнего посещения: " + LastVisit.ToShortDateString() + " ";
+			}
+		}
+
+		public int VisitCount
+		{
+			get
+			{
+				return this.ClientService.Count();
+			}
+		}
+
+		public string VisitCountText
+		{
+			get
+			{
+				return "Кол-во посещений: " + VisitCount;
+			}
+		}
+
+		public string EmailString {
+			get
+			{
+				if (Email == null)
+				{
+					return "  ";
+				}
+				else
+				{
+					return Email;
+				}
+			}
+		}
+
+
+		public virtual Gender Gender { get; set; }
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+		public virtual ICollection<ClientService> ClientService { get; set; }
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+		public virtual ICollection<Tag> Tag { get; set; }
+	}
 }

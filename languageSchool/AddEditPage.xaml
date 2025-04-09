@@ -1,0 +1,93 @@
+﻿<Page x:Class="languageSchool.AddEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:languageSchool"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AddEditPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Код" Name="IdTB" ></TextBlock>
+            <TextBox Text="{Binding ID}" IsEnabled="False" Grid.Column="1" Name="IdTBox" ></TextBox>
+            
+            <TextBlock Text="Фамилия" Grid.Row="1"></TextBlock>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LastName}"></TextBox>
+
+            <TextBlock Text="Имя" Grid.Row="2"></TextBlock>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding FirstName}"></TextBox>
+
+            <TextBlock Text="Отчество" Grid.Row="3"></TextBlock>
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Patronymic}"></TextBox>
+
+            <TextBlock Text="Email" Grid.Row="4"></TextBlock>
+            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Email}"></TextBox>
+
+            <TextBlock Text="Телефон" Grid.Row="5"></TextBlock>
+            <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Phone}"></TextBox>
+
+            <TextBlock Text="Дата рождения" Grid.Row="6"></TextBlock>
+            <DatePicker Grid.Column="1" Grid.Row="6" SelectedDate="{Binding Birthday}" Name="BirthdayDP" Width="200"></DatePicker>
+
+            <TextBlock Text="Пол" Grid.Row="7"></TextBlock>
+            <StackPanel  Grid.Column="1" Grid.Row="7">
+                <RadioButton Content="Женский" GroupName="GenderRadioButton" Name="FemaleRB"></RadioButton>
+                <RadioButton Content="Мужской" GroupName="GenderRadioButton" Name="MaleRB"></RadioButton>
+            </StackPanel>
+
+        </Grid>
+        
+
+        <TextBlock Grid.Row="0" Grid.Column="1"></TextBlock>
+
+        <Image Name="ClientImage" Grid.Column="1" Grid.Row="1" Grid.RowSpan="5" Stretch="UniformToFill" Width="200" MaxHeight="200">
+            <Image.Source>
+                <Binding Path="PhotoPath">
+                    <Binding.TargetNullValue>
+                        <ImageSource>
+                            school_logo.png
+                        </ImageSource>
+                    </Binding.TargetNullValue>
+                </Binding>
+            </Image.Source>
+        </Image>
+
+        <Button Name="PhotoPathButton" Grid.Column="1" Grid.Row="6" Content="Изменить фото" Click="PhotoPathButton_Click"></Button>
+
+            <Button Name="SaveButton" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="7" Click="SaveButton_Click" Content="Сохранить"></Button>
+        </Grid>
+</Page>
